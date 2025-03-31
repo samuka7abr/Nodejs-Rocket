@@ -1,9 +1,10 @@
 {
   "name": "nodejs-rocket",
+  "type": "module",
   "version": "1.0.0",
   "main": "teste.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node --watch src/server.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,8 @@
     "url": "https://github.com/samuka7abr/Nodejs-Rocket/issues"
   },
   "homepage": "https://github.com/samuka7abr/Nodejs-Rocket#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "http": "^0.0.1-security"
+  }
 }
