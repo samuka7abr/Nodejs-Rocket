@@ -31,7 +31,7 @@ const users = [];
 
 const server = http.createServer(async (req, res) => {
   const { method, url } = req;
-  json;
+  await json(req,res)
   if (method === "GET" && url === "/users") {
     return res
       .setHeader("Content-type", "application/json")
