@@ -1,5 +1,5 @@
 import http from "node:http";
-import { json } from "node:stream/consumers";
+import { json } from "./middlewares/json.js";
 
 // - Criar usuários
 // - Listagem usuários
