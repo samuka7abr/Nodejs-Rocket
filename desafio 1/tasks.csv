@@ -1,0 +1,4 @@
+title,description
+Estudar Node.js,Focar no módulo de fundamentos e desafios
+Implementar API,Terminar o CRUD da aplicação de tarefas
+Importar CSV,Testar a importação de tasks via stream
