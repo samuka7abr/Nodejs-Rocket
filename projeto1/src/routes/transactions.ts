@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import { database } from '../database';
 import { z } from 'zod';
+import { randomUUID } from 'crypto';
  
 export async function transactionsRoutes(app: FastifyInstance){
 	app.get('/', async () => {
@@ -33,16 +34,29 @@ export async function transactionsRoutes(app: FastifyInstance){
 		const createTransactionBodySchema = z.object({
 			title: z.string(),
 			amount: z.number(),
-			type: z.enum(['credit', 'debit']),
+			type: z.enum(['credit', 'debit'])
 		});
 
 		const { title, amount, type } = createTransactionBodySchema.parse(request.body);
+
+		let sessionId = request.cookies.sessionId;
+
+		if(!sessionId){
+			sessionId = randomUUID();
+
+			reply.cookie('sessionId', sessionId, {
+				path: '/',
+				maxAge:  60 * 60 * 24 * 7 //7days
+			});
+		}
+
 		await database('transactions')
 			.insert({
 				id: crypto.randomUUID(),
 				title,
-				amount: type === 'credit' ? amount : amount * - 1
+				amount: type === 'credit' ? amount : amount * - 1,
+				session_id: sessionId,
 			});
-		return reply.status(201).send;
+		return reply.status(201).send();
 	});
 }
