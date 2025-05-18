@@ -11,6 +11,24 @@ export async function transactionsRoutes(app: FastifyInstance){
 		};
 	});
 
+	app.get('/:id', async(request) => {
+		const getTransactionParamsSchema = z.object({
+			id: z.string().uuid()
+		});
+
+		const { id } = getTransactionParamsSchema.parse(request.params);
+
+		const transaction = await database('transactions').where('id', id).first();
+
+		return { transaction };
+	});
+
+	app.get('/sumary', async () =>{
+		const sumary = await database('transactions').sum('amount', {as: 'amount'}).first();
+
+		return sumary;
+	});
+
 	app.post('/', async (request, reply) => {
 		const createTransactionBodySchema = z.object({
 			title: z.string(),
