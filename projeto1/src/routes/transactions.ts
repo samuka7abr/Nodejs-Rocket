@@ -1,36 +1,53 @@
+import { checkSessionIdExists } from '../middleware/check-session-id-exists';
 import { FastifyInstance } from 'fastify';
 import { database } from '../database';
-import { z } from 'zod';
 import { randomUUID } from 'crypto';
- 
+import { z } from 'zod';
+
+
 export async function transactionsRoutes(app: FastifyInstance){
-	app.get('/', async () => {
-		const transactions = await database('transactions').select();
+	app.addHook('preHandler', async (request) => {
+		console.log(`[${request.method}] ${request.url}`);
+	});
+
+	app.get('/', {
+		preHandler: [checkSessionIdExists]
+	},async (request) => {
+		const{ sessionId } = request.cookies;
+		const transactions = await database('transactions').where('session_id', sessionId).select();
 
 		return {
 			transactions
 		};
 	});
 
-	app.get('/:id', async(request) => {
+	app.get('/:id', {
+		preHandler: [checkSessionIdExists]
+	},async(request) => {
 		const getTransactionParamsSchema = z.object({
 			id: z.string().uuid()
 		});
 
 		const { id } = getTransactionParamsSchema.parse(request.params);
 
-		const transaction = await database('transactions').where('id', id).first();
+		const { sessionId } = request.cookies;
+
+		const transaction = await database('transactions').where('id', id).andWhere('session_id', sessionId).first();
 
 		return { transaction };
 	});
 
-	app.get('/sumary', async () =>{
+	app.get('/sumary', {
+		preHandler: [checkSessionIdExists]
+	},async () =>{
 		const sumary = await database('transactions').sum('amount', {as: 'amount'}).first();
 
 		return sumary;
 	});
 
-	app.post('/', async (request, reply) => {
+	app.post('/', {
+		preHandler: [checkSessionIdExists]
+	},async (request, reply) => {
 		const createTransactionBodySchema = z.object({
 			title: z.string(),
 			amount: z.number(),
