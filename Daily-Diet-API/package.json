@@ -1,0 +1,42 @@
+{
+  "name": "daily-diet-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "knex": "tsx ./node_modules/.bin/knex",
+    "lint": "eslint . --ext .ts --fix",
+    "test": "vitest --run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samuka7abr/Daily-Diet-API.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/samuka7abr/Daily-Diet-API/issues"
+  },
+  "homepage": "https://github.com/samuka7abr/Daily-Diet-API#readme",
+  "description": "",
+  "dependencies": {
+    "@fastify/cookie": "^11.0.2",
+    "dotenv": "^16.5.0",
+    "fastify": "^5.3.3",
+    "knex": "^3.1.0",
+    "sqlite3": "^5.1.7",
+    "supertest": "^7.1.1",
+    "zod": "^3.25.7"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.14.0",
+    "@typescript-eslint/eslint-plugin": "^8.29.1",
+    "@typescript-eslint/parser": "^8.29.1",
+    "eslint": "^8.57.1",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.1"
+  }
+}
